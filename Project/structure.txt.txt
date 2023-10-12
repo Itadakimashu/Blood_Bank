@@ -1,0 +1,99 @@
+
+
+<<<<<<<<<<<<<<<<<<<<<Welcome To blood bank>>>>>>>>>>>>>>>>>>>>
+
+1. Purchase Donation
+2. add Donor
+3. edit donor
+4. view available Donors
+5. view donated list
+
+
+
+
+<<<<<<<<<<<<<<<<<<<<<< Purchase donnor>>>>>>>>>>>>>>>>>>>>>>>>
+
+Info:-
+Blood group: (input)
+
+Loaction Needed: (input)
+
+Searched List:-
+     Name               group            location       contact
+1. Nayer Ali             b+                 NSU          018232432
+2.Nayer Ali             b+                 NSU          018232432
+3.Nayer Ali             b+                 NSU          018232432
+4. Nayer Ali             b+                 NSU          018232432
+5. Nayer Ali             b+                 NSU          018232432
+
+
+
+<<<<<<<<<<<<<<<<<<add donor>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Donor info:-
+   donor Name:- (input)
+   donor blood group:- (input)
+   location:- Nsu
+   Contact:- 01823123123
+
+Donor added to database.
+
+
+<<<<<<<<<<<<<<<<<<<<Edit donor>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+     Name               group            location       contact
+1. Nayer Ali             b+                 NSU          018232432
+2.Nayer Ali             b+                 NSU          018232432
+3.Nayer Ali             b+                 NSU          018232432
+4. Nayer Ali             b+                 NSU          018232432
+5. Nayer Ali             b+                 NSU          018232432
+
+Enter which one to edit:- 1
+
+
+
+(clears windows)
+
+Nayer Ali             b+                 NSU          018232432
+What would you like to edit:-
+1.Name
+2.Location
+3.contact
+4.group
+
+5.exit
+
+(clears window)
+change (input_need):- (input)
+
+chaged (inputed meu)
+
+
+
+<<<<<<<<<<<<<<<<<<<<<view donated list>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+     Name               group            location       contact
+1. Nayer Ali             b+                 NSU          018232432
+2.Nayer Ali             b+                 NSU          018232432
+3.Nayer Ali             b+                 NSU          018232432
+4. Nayer Ali             b+                 NSU          018232432
+5. Nayer Ali             b+                 NSU          018232432
+
+
+press x to exit
+
+
+
+<<<<<<<<<<<<<<<<<<<<<view available donor>>>>>>>>>>>>>>>>>>>>>>>
+
+     Name               group            location       contact
+1. Nayer Ali             b+                 NSU          018232432
+2.Nayer Ali             b+                 NSU          018232432
+3.Nayer Ali             b+                 NSU          018232432
+4. Nayer Ali             b+                 NSU          018232432
+5. Nayer Ali             b+                 NSU          018232432
+
+
+press x to exit
+
+
+
