@@ -15,7 +15,7 @@ struct Donor{
 struct Donor donors[100];
 int donors_size = 2;
 
-char state[100] = "Main Menu";
+char state[100] = "main_menu";
 char action;
 
 
@@ -42,8 +42,23 @@ int main(){
     printf("%s %d",d.name,d.contact);
 
     while(state != "EXIT"){
-        if(strcmp(state,"Main Menu") == 0){
+        if(strcmp(state,"main_menu") == 0){
             main_menu();
+        }
+        if(strcmp(state,"purchase_donor") == 0){
+            purchase_donor();
+        }
+        if(strcmp(state,"add_donor") == 0){
+            add_donor();
+        }
+        if(strcmp(state,"edit_donor") == 0){
+            edit_donor();
+        }
+        if(strcmp(state,"view_donor") == 0){
+            view_donor();
+        }
+        if(strcmp(state,"donated_list") == 0){
+            donated_list();
         }
     }
     return 0;
@@ -59,24 +74,24 @@ void main_menu(){
     printf("4. view available Donors\n");
     printf("5. view donated list\n");
 
-    printf("press any option___ \n");
+    printf("press any option...\n");
     action = getch();
 
     switch(action){
     case '1':
-        purchase_donor();
+        strcpy(state, "purchase_donor");
         break;
     case '2':
-        add_donor();
+        strcpy(state, "add_donor");
         break;
     case '3':
-        edit_donor();
+        strcpy(state, "edit_donor");
         break;
     case '4':
-        view_donor();
+        strcpy(state, "view_donor");
         break;
     case '5':
-        donated_list();
+        strcpy(state, "donated_list");
         break;
     default:
         printf("wrong input");
