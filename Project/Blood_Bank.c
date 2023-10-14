@@ -105,15 +105,41 @@ void main_menu(){
 void purchase_donor(){
     system("cls");
 
-    printf("<<<<<<<<<<<<<<<<<<<<<< Purchase donnor>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
-    printf("Info:-");
+
+    printf("<<<<<<<<<<<<<<<<<<<<<< Purchase donnor >>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+    printf("Info:-\n");
 
     getch();
     return;
 }
 
 void add_donor(){
-    return;
+    system("cls");
+    FILE *f = fopen("donors.txt","a");
+    struct Donor d;
+    printf("<<<<<<<<<<<<<<<<<< add donor >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+    printf("Donor Info          :-\n");
+    printf("donor Name          :- ");
+    gets(d.name);
+    printf("donor blood group   :- ");
+    gets(d.group);
+    printf("Location            :- ");
+    gets(d.location);
+    printf("Contact             :- ");
+    gets(d.contact);
+
+    donors[donors_size] = d;
+    donors_size++;
+
+    for(int i = 0; i < donors_size; i++){
+        fprintf(f,"%s %s %s %s\n",donors[i].name,donors[i].group,donors[i].location,donors[i].contact);
+    }
+    fclose(f);
+    printf("Donor added to database.\n");
+    getch();
+    strcpy(state, "main_menu");
+
+
 }
 
 void edit_donor(){
