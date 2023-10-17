@@ -3,16 +3,22 @@
 #include<conio.h>
 #include<windows.h>
 
+#define MAX_DONORS 100
+
+typedef struct Donor SD;
+
 struct Donor{
     char name[100];
     char group[5];
     char location[100];
     char contact[15];
+    int age;
+    float hemoglobin;
 };
 
 
 //global variables
-struct Donor donors[100];
+
 int donors_size = 2;
 
 char state[100] = "main_menu";
@@ -21,20 +27,23 @@ char action;
 
 //functions
 void main_menu();
-void purchase_donor();
-void add_donor();
+void purchase_donor(SD donors[]);
+void add_donor(SD donors[]);
 void edit_donor();
 void donated_list();
-void view_donor();
+void view_donor(SD donors[]);
 
 
 
 int main(){
-    struct Donor d;
+    struct Donor donors[MAX_DONORS];
+    SD d;
     strcpy(d.name,"Nayer Ali");
     strcpy(d.group,"b+");
     strcpy(d.location,"NSU");
     strcpy(d.contact, "18212312");
+    d.age = 15;
+    d.hemoglobin = 12.5;
 
     donors[0] = d;
     donors[1] = d;
@@ -46,16 +55,16 @@ int main(){
             main_menu();
         }
         if(strcmp(state,"purchase_donor") == 0){
-            purchase_donor();
+            purchase_donor(donors);
         }
         if(strcmp(state,"add_donor") == 0){
-            add_donor();
+            add_donor(donors);
         }
         if(strcmp(state,"edit_donor") == 0){
             edit_donor();
         }
         if(strcmp(state,"view_donor") == 0){
-            view_donor();
+            view_donor(donors);
         }
         if(strcmp(state,"donated_list") == 0){
             donated_list();
@@ -102,20 +111,32 @@ void main_menu(){
 
 
 
-void purchase_donor(){
+void purchase_donor(SD donors[]){
     system("cls");
 
+    char grp[5];
 
     printf("<<<<<<<<<<<<<<<<<<<<<< Purchase donnor >>>>>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("Info:-\n");
 
+    printf("Enter blood group: ");
+    scanf("%s",grp);
+    int j = 1;
+    printf("searched List:-\n");
+    for(int i = 0; i < donors_size; i++){
+        SD d = donors[i];
+        if(strcmp(d.group,grp) == 0){
+            printf("%d. %s %s %s %s %d %f\n",j,d.name,d.group,d.location,d.contact,d.age,d.hemoglobin);
+            j++;
+        }
+    }
     getch();
     return;
 }
 
-void add_donor(){
+void add_donor(SD donors[]){
     system("cls");
-    FILE *f = fopen("donors.txt","a");
+    FILE *f = fopen("donors.txt","w");
     struct Donor d;
     printf("<<<<<<<<<<<<<<<<<< add donor >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("Donor Info          :-\n");
@@ -127,12 +148,17 @@ void add_donor(){
     gets(d.location);
     printf("Contact             :- ");
     gets(d.contact);
+    printf("Donor Age           :- ");
+    scanf("%d",&d.age);
+    printf("Donor hemoglobin    :- ");
+    scanf("%f",&d.hemoglobin);
 
     donors[donors_size] = d;
     donors_size++;
 
     for(int i = 0; i < donors_size; i++){
-        fprintf(f,"%s %s %s %s\n",donors[i].name,donors[i].group,donors[i].location,donors[i].contact);
+        struct Donor d = donors[i];
+        fprintf(f,"%s %s %s %s %d %f\n",d.name,d.group,d.location,d.contact,d.age,d.hemoglobin);
     }
     fclose(f);
     printf("Donor added to database.\n");
@@ -150,14 +176,14 @@ void donated_list(){
     return;
 }
 
-void view_donor(){
+void view_donor(SD donors[]){
     system("cls");
 
     printf("<<<<<<<<<<<<<<<<<<<<<view available donor>>>>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("          Name           group             location          contact\n");
     for(int i = 0; i < donors_size; i++){
         struct Donor d = donors[i];
-        printf("%d. %s %s %s %s\n",i+1,d.name,d.group,d.location,d.contact);
+        printf("%d. %s %s %s %s %d %f\n",i+1,d.name,d.group,d.location,d.contact,d.age,d.hemoglobin);
     }
     getch();
     return;
