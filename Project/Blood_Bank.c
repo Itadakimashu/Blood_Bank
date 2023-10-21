@@ -31,7 +31,7 @@ void init(SD donors[]);
 void main_menu();
 void purchase_donor(SD donors[]);
 void add_donor(SD donors[]);
-void edit_donor();
+void edit_donor(SD donors[]);
 void donated_list();
 void view_donor(SD donors[]);
 
@@ -53,7 +53,7 @@ int main(){
             add_donor(donors);
         }
         if(strcmp(state,"edit_donor") == 0){
-            edit_donor();
+            edit_donor(donors);
         }
         if(strcmp(state,"view_donor") == 0){
             view_donor(donors);
@@ -176,8 +176,76 @@ void add_donor(SD donors[]){
 
 }
 
-void edit_donor(){
-    return;
+void edit_donor(SD donors[]){
+    system("cls");
+    printf("<<<<<<<<<<<<<<<<<<<<Edit donor>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+
+
+    printf("+----------------------------------------------------------------------------------------------------+\n");
+    printf("| SL |          Name         |    Age   |    Group   |  Hemoglobin |   Location   |      Contact     |\n");
+    printf("+----------------------------------------------------------------------------------------------------+\n");
+
+    for(int i = 0; i < donors_size; i++){
+        struct Donor d = donors[i];
+        printf("%d. %s %d %s %f %s %s\n",i+1,d.name,d.age,d.group,d.hemoglobin,d.location,d.contact);
+    }
+    printf("Enter index of which one to edit...");
+    action = getch();
+    SD *d = &donors[action-'0'-1];
+
+
+
+
+    system("cls");
+    printf("%s %d %s %f %s %s\n",d->name,d->age,d->group,d->hemoglobin,d->location,d->contact);
+
+    printf("What would you like to edit:-\n");
+    printf("1.Name\n");
+    printf("2.Age\n");
+    printf("3.group\n");
+    printf("4.hemoglobin\n");
+    printf("5.Location\n");
+    printf("6.contact\n");
+
+    printf("7.exit\n");
+
+    action = getch();
+    system("cls");
+    switch(action){
+    case '1':
+        printf("Change Name: ");
+        gets(d->name);
+        break;
+    case '2':
+        printf("Change age: ");
+        scanf("%d",&d->age);
+        break;
+    case '3':
+        printf("Change Group: ");
+        scanf("%s",d->group);
+        break;
+    case '4':
+        printf("Change Hemoglobin: ");
+        scanf("%f",&d->hemoglobin);
+        break;
+    case '5':
+        printf("Change Location: ");
+        scanf("%s",d->location);
+        break;
+    case '6':
+        printf("Change Contact: ");
+        scanf("%s",d->contact);
+        break;
+    case '7':
+        strcpy(state,"edit_view");
+        return;
+
+    default:
+        break;
+    }
+    save(donors);
+    fflush(stdin);
+
 }
 
 void donated_list(){
@@ -195,7 +263,7 @@ void view_donor(SD donors[]){
 
     for(int i = 0; i < donors_size; i++){
         struct Donor d = donors[i];
-        printf("%d. %s %s %s %s %d %f\n",i+1,d.name,d.group,d.location,d.contact,d.age,d.hemoglobin);
+        printf("%d. %s %d %s %f %s %s\n",i+1,d.name,d.age,d.group,d.hemoglobin,d.location,d.contact);
     }
     getch();
     strcpy(state,"main_menu");

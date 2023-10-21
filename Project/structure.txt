@@ -57,11 +57,13 @@ Enter which one to edit:- 1
 Nayer Ali             b+                 NSU          018232432
 What would you like to edit:-
 1.Name
-2.Location
-3.contact
-4.group
+2.age
+3.group
+4.hemoglobin
+5.Location
+6.contact
 
-5.exit
+7.exit
 
 (clears window)
 change (input_need):- (input)

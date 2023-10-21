@@ -1,10 +1,10 @@
-Nayer Ali
-b+
+Nayer Ali Ahsan
+b-
 NSU
 18212312
-15
-12.500000
-Nayer Ali
+40
+3.690000
+Nayer ahmed
 b+
 NSU
 18212312
@@ -28,3 +28,9 @@ CHADPUR
 01823333484
 15
 21.299999
+mahfuz ahmed
+b+
+nsu
+0178888
+25
+12.300000
