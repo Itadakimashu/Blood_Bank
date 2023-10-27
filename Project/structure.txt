@@ -31,8 +31,24 @@ Searched List:-
 | 6. |       Nayer Ali       |    15    |      b+    |     12.5    |     NSU      |    018232432     |
 +----------------------------------------------------------------------------------------------------+
 
+Enter the index you want to purchase...
+
 press x to exit
 
+(clears windows)
+
++----------------------------------------------------------------------------------------------------+
+| SL |          Name         |    Age   |    Group   |  Hemoglobin |   Location   |      Contact     |
++----------------------------------------------------------------------------------------------------+
+| 1. |       Nayer Ali       |    15    |      b+    |     12.5    |     NSU      |    018232432     |
++----------------------------------------------------------------------------------------------------+
+
+Are you sure you want to purchase this donor?
+press y/n:
+
+donor purchased. 
+Nayer Ali removed form available donors.
+Nayer Ali has been added to donated list.
 
 
 <<<<<<<<<<<<<<<<<<add donor>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

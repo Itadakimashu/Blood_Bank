@@ -3,7 +3,7 @@ b-
 NSU
 18212312
 40
-3.690000
+13.690000
 Nayer ahmed
 b+
 NSU
@@ -14,14 +14,14 @@ Fazly Fardin Chowdhury
 o+
 DHAKA
 01823333484
-15
+18
 34.400002
 Nayer ahmed
 o-
 NSU
 0123123
 15
-2.100000
+11.100000
 Nur Mubin
 o-
 CHADPUR
@@ -34,3 +34,9 @@ nsu
 0178888
 25
 12.300000
+rakib hasan
+o-
+Dhaka
+01823333484
+15
+21.299999

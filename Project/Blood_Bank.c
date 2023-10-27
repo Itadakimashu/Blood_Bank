@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<stdlib.h>
+//#include<stdlib.h>
 #include<string.h>
 #include<conio.h>
 #include<windows.h>
@@ -9,10 +9,10 @@
 typedef struct Donor SD;
 
 struct Donor{
-    char name[100];
+    char name[23];
     char group[5];
-    char location[100];
-    char contact[15];
+    char location[14];
+    char contact[18];
     int age;
     float hemoglobin;
 };
@@ -35,7 +35,10 @@ void edit_donor(SD donors[]);
 void donated_list();
 void view_donor(SD donors[]);
 
+
 void save(SD donors[]);
+void search_donors(char *grp,int *searched_index,SD donors[]);
+void view_list(int size,SD list[]);
 
 
 
@@ -128,21 +131,20 @@ void purchase_donor(SD donors[]){
     system("cls");
 
     char grp[5];
+    int searched_index[MAX_DONORS];
+
+    for(int i = 0; i < MAX_DONORS; i++) searched_index[i] = -1;
 
     printf("<<<<<<<<<<<<<<<<<<<<<< Purchase donnor >>>>>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("Info:-\n");
 
     printf("Enter blood group: ");
     scanf("%s",grp);
-    int j = 1;
-    printf("searched List:-\n");
-    for(int i = 0; i < donors_size; i++){
-        SD d = donors[i];
-        if(strcmp(d.group,grp) == 0){
-            printf("%d. %s %s %s %s %d %f\n",j,d.name,d.group,d.location,d.contact,d.age,d.hemoglobin);
-            j++;
-        }
-    }
+
+
+    search_donors(grp,searched_index,donors);
+
+
     getch();
     return;
 }
@@ -180,15 +182,9 @@ void edit_donor(SD donors[]){
     system("cls");
     printf("<<<<<<<<<<<<<<<<<<<<Edit donor>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
 
+    printf("There are the donors added in database:-\n");
+    view_list(donors_size,donors);
 
-    printf("+----------------------------------------------------------------------------------------------------+\n");
-    printf("| SL |          Name         |    Age   |    Group   |  Hemoglobin |   Location   |      Contact     |\n");
-    printf("+----------------------------------------------------------------------------------------------------+\n");
-
-    for(int i = 0; i < donors_size; i++){
-        struct Donor d = donors[i];
-        printf("%d. %s %d %s %f %s %s\n",i+1,d.name,d.age,d.group,d.hemoglobin,d.location,d.contact);
-    }
     printf("Enter index of which one to edit...");
     action = getch();
     SD *d = &donors[action-'0'-1];
@@ -197,7 +193,8 @@ void edit_donor(SD donors[]){
 
 
     system("cls");
-    printf("%s %d %s %f %s %s\n",d->name,d->age,d->group,d->hemoglobin,d->location,d->contact);
+    view_list(1,d);
+    //printf("%s %d %s %f %s %s\n",d->name,d->age,d->group,d->hemoglobin,d->location,d->contact);
 
     printf("What would you like to edit:-\n");
     printf("1.Name\n");
@@ -237,7 +234,7 @@ void edit_donor(SD donors[]){
         scanf("%s",d->contact);
         break;
     case '7':
-        strcpy(state,"edit_view");
+        strcpy(state,"edit_donor");
         return;
 
     default:
@@ -256,18 +253,14 @@ void view_donor(SD donors[]){
     system("cls");
 
     printf("<<<<<<<<<<<<<<<<<<<<<view available donor>>>>>>>>>>>>>>>>>>>>>>>\n\n");
-    printf("+----------------------------------------------------------------------------------------------------+\n");
-    printf("| SL |          Name         |    Age   |    Group   |  Hemoglobin |   Location   |      Contact     |\n");
-    printf("+----------------------------------------------------------------------------------------------------+\n");
+    printf("These are the donors available:-\n");
+    view_list(donors_size,donors);
 
-
-    for(int i = 0; i < donors_size; i++){
-        struct Donor d = donors[i];
-        printf("%d. %s %d %s %f %s %s\n",i+1,d.name,d.age,d.group,d.hemoglobin,d.location,d.contact);
-    }
     getch();
     strcpy(state,"main_menu");
 }
+
+
 
 void save(SD donors[]){
     FILE *f = fopen("donors.txt","w");
@@ -277,4 +270,63 @@ void save(SD donors[]){
     }
     fclose(f);
     printf("Donor added to database.\n");
+}
+
+void search_donors(char *grp,int *searched_index,SD donors[]){
+
+    SD searched_dornors[MAX_DONORS];
+    int size = 0;
+
+    for(int i = 0; i < donors_size; i++){
+        SD d = donors[i];
+        if(strcmp(d.group,grp) == 0){
+            searched_dornors[size] = d;
+            size++;
+            *searched_index = i;
+            searched_index++;
+        }
+    }
+    printf("Searched List:-\n");
+    view_list(size,searched_dornors);
+}
+
+
+void view_list(int size,SD list[]){
+    printf("+----------------------------------------------------------------------------------------------------+\n");
+    printf("| SL |          Name         |    Age   |    Group   |  Hemoglobin |   Location   |      Contact     |\n");
+    printf("+----------------------------------------------------------------------------------------------------+\n");
+
+
+    for(int i = 0; i < size; i++){
+        SD d = list[i];
+
+        printf("| %d.",i+1);
+        if(i < 10) printf(" ");
+        printf("|");
+
+        printf("%s",d.name);
+        for(int i = 0; i < sizeof(d.name)-strlen(d.name); i++) printf(" ");
+        printf("|");
+
+        printf("    %d    |",d.age);
+
+        printf("     %s     |",d.group);
+
+        printf("     %0.1f    |",d.hemoglobin);
+
+        printf("%s",d.location);
+        for(int i = 0; i < sizeof(d.location)-strlen(d.location);i++) printf(" ");
+        printf("|");
+
+        printf("%s",d.contact);
+        for(int i = 0; i < sizeof(d.contact)-strlen(d.contact); i++) printf(" ");
+        printf("|");
+
+
+
+        printf("\n");
+
+        //printf("%d. %s %d %s %f %s %s\n",i+1,d.name,d.age,d.group,d.hemoglobin,d.location,d.contact);
+    }
+    printf("+----------------------------------------------------------------------------------------------------+\n");
 }
