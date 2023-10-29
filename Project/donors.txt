@@ -1,33 +1,9 @@
-Nayer Ali Ahsan
-b-
-NSU
-18212312
-40
-13.690000
-Nayer ahmed
-b+
-NSU
-18212312
-15
-12.500000
-Fazly Fardin Chowdhury
-o+
-DHAKA
-01823333484
-18
-34.400002
 Nayer ahmed
 o-
 NSU
 0123123
 15
 11.100000
-Nur Mubin
-o-
-CHADPUR
-01823333484
-15
-21.299999
 mahfuz ahmed
 b+
 nsu
@@ -40,3 +16,27 @@ Dhaka
 01823333484
 15
 21.299999
+Sadia Islam
+ab+
+Barishal
+0123441132
+18
+9.000000
+Farhan Zaman Khan
+b+
+Narayanganj
+01719233334
+31
+13.400000
+Mamud Mahmadullah
+ab-
+Dhaka
+01197222012
+41
+12.100000
+Sakib Al Hasan
+o+
+Gulshan
+01914245419
+34
+13.300000

@@ -10,7 +10,7 @@ typedef struct Donor SD;
 
 struct Donor{
     char name[23];
-    char group[5];
+    char group[7];
     char location[14];
     char contact[18];
     int age;
@@ -28,18 +28,19 @@ char action;
 
 //functions
 void init(SD donors[]);
+
 void main_menu();
 void purchase_donor(SD donors[]);
 void add_donor(SD donors[]);
 void edit_donor(SD donors[]);
-void donated_list();
+void delete_donor(SD donors[]);
 void view_donor(SD donors[]);
 
 
 void save(SD donors[]);
 void search_donors(char *grp,int *searched_index,SD donors[]);
 void view_list(int size,SD list[]);
-
+void delete_index(int index,SD list[]);
 
 
 int main(){
@@ -61,8 +62,8 @@ int main(){
         if(strcmp(state,"view_donor") == 0){
             view_donor(donors);
         }
-        if(strcmp(state,"donated_list") == 0){
-            donated_list();
+        if(strcmp(state,"delete_donor") == 0){
+            delete_donor(donors);
         }
     }
     return 0;
@@ -94,10 +95,10 @@ void main_menu(){
     system("cls");
     printf("<<<<<<<<<<<<<<<<<<<<<Welcome To blood bank>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("1. Purchase Donation\n");
-    printf("2. add Donor\n");
-    printf("3. edit donor\n");
-    printf("4. view available Donors\n");
-    printf("5. view donated list\n");
+    printf("2. Add Donor\n");
+    printf("3. Edit Donor\n");
+    printf("4. View Available Donors\n");
+    printf("5. Delete Donor\n");
 
     printf("press any option...");
     action = getch();
@@ -116,7 +117,7 @@ void main_menu(){
         strcpy(state, "view_donor");
         break;
     case '5':
-        strcpy(state, "donated_list");
+        strcpy(state, "delete_donor");
         break;
     default:
         printf("wrong input");
@@ -143,14 +144,35 @@ void purchase_donor(SD donors[]){
 
 
     search_donors(grp,searched_index,donors);
+    printf("Press the index of donor which you would like to purchase...\n\n");
+    printf("press x to exit.\n");
 
-
+    action = getch();
+    if(action == 'x'){
+        strcpy(state,"main_menu");
+        return;
+    }
+    int index = searched_index[action-'0'-1];
+    system("cls");
+    view_list(1,&donors[index]);
+    printf("are you sure you want to purchase this donor?\n");
+    printf("press y/n:\n");
+    action = getch();
+    switch(action){
+    case 'y':
+        delete_index(index,donors);
+        save(donors);
+        break;
+    }
+    printf("press any key to continue to main menu..\n");
     getch();
-    return;
+    strcpy(state,"main_menu");
 }
 
 void add_donor(SD donors[]){
     system("cls");
+    fflush(stdin);
+
     struct Donor d;
     printf("<<<<<<<<<<<<<<<<<< add donor >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("Donor Info          :-\n");
@@ -166,12 +188,14 @@ void add_donor(SD donors[]){
     scanf("%d",&d.age);
     printf("Donor hemoglobin    :- ");
     scanf("%f",&d.hemoglobin);
-    fflush(stdin);
+
 
     donors[donors_size] = d;
     donors_size++;
 
     save(donors);
+    printf("donor added to database...\n");
+    printf("press any key to continue.");
     getch();
     strcpy(state, "main_menu");
 
@@ -182,7 +206,7 @@ void edit_donor(SD donors[]){
     system("cls");
     printf("<<<<<<<<<<<<<<<<<<<<Edit donor>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
 
-    printf("There are the donors added in database:-\n");
+    printf("These are the donors added in database:-\n");
     view_list(donors_size,donors);
 
     printf("Enter index of which one to edit...");
@@ -245,8 +269,35 @@ void edit_donor(SD donors[]){
 
 }
 
-void donated_list(){
-    return;
+void delete_donor(SD donors[]){
+    system("cls");
+    printf("<<<<<<<<<<<<<<<<<<<<<<<<Delete Donor >>>>>>>>>>>>>>>>>>>>>>>\n\n");
+    printf("these are the donors added in the database:-\n");
+
+    view_list(donors_size,donors);
+
+    printf("Enter the index of donor which you want to delete...");
+    action = getch();
+
+    system("cls");
+
+    int index = action-'0'-1;
+    view_list(1,&donors[index]);
+
+    printf("Are you sure you want to delete this donor?\n");
+    printf("press y/n:\n\n");
+    printf("press x to exit");
+    action = getch();
+    if(action == 'x'){
+        strcpy(state,"main_menu");
+        return;
+    }
+    delete_index(index,donors);
+
+
+    getch();
+
+
 }
 
 void view_donor(SD donors[]){
@@ -263,13 +314,12 @@ void view_donor(SD donors[]){
 
 
 void save(SD donors[]){
-    FILE *f = fopen("donors.txt","w");
+    FILE *f = fopen("donors.txt","wt");
     for(int i = 0; i < donors_size; i++){
         struct Donor d = donors[i];
         fprintf(f,"%s\n%s\n%s\n%s\n%d\n%f\n",d.name,d.group,d.location,d.contact,d.age,d.hemoglobin);
     }
     fclose(f);
-    printf("Donor added to database.\n");
 }
 
 void search_donors(char *grp,int *searched_index,SD donors[]){
@@ -310,9 +360,13 @@ void view_list(int size,SD list[]){
 
         printf("    %d    |",d.age);
 
-        printf("     %s     |",d.group);
+        printf("     %s",d.group);
+        for(int i = 0; i < sizeof(d.group)-strlen(d.group); i++) printf(" ");
+        printf("|");
 
-        printf("     %0.1f    |",d.hemoglobin);
+        printf("     %0.1f    ",d.hemoglobin);
+        if(d.hemoglobin < 10) printf(" ");
+        printf("|");
 
         printf("%s",d.location);
         for(int i = 0; i < sizeof(d.location)-strlen(d.location);i++) printf(" ");
@@ -329,4 +383,13 @@ void view_list(int size,SD list[]){
         //printf("%d. %s %d %s %f %s %s\n",i+1,d.name,d.age,d.group,d.hemoglobin,d.location,d.contact);
     }
     printf("+----------------------------------------------------------------------------------------------------+\n");
+}
+
+void delete_index(int index,SD list[]){
+    for(int i = index; i < donors_size; i++){
+        list[i] = list[i+1];
+    }
+    donors_size--;
+    printf("donor deleted from database.");
+    save(list);
 }
