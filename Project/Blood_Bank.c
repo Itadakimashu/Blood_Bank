@@ -1,5 +1,4 @@
 #include<stdio.h>
-//#include<stdlib.h>
 #include<string.h>
 #include<conio.h>
 #include<windows.h>
@@ -22,7 +21,7 @@ struct Donor{
 
 int donors_size;
 
-char state[100] = "main_menu";
+char state[100];
 char action;
 
 
@@ -38,7 +37,7 @@ void view_donor(SD donors[]);
 
 
 void save(SD donors[]);
-void search_donors(char *grp,int *searched_index,SD donors[]);
+void search_donors(char grp[],int searched_index[],SD donors[]);
 void view_list(int size,SD list[]);
 void delete_index(int index,SD list[]);
 
@@ -71,6 +70,7 @@ int main(){
 
 
 void init(SD donors[]){
+    strcpy(state,"main_menu");
     donors_size = 0;
     FILE *f = fopen("donors.txt","r");
     while(1){
@@ -209,8 +209,13 @@ void edit_donor(SD donors[]){
     printf("These are the donors added in database:-\n");
     view_list(donors_size,donors);
 
-    printf("Enter index of which one to edit...");
+    printf("Enter index of which one to edit...\n\n");
+    printf("press x to exit.");
     action = getch();
+    if(action == 'x'){
+        strcpy(state,"main_menu");
+        return;
+    }
     SD *d = &donors[action-'0'-1];
 
 
@@ -233,6 +238,7 @@ void edit_donor(SD donors[]){
     action = getch();
     system("cls");
     switch(action){
+
     case '1':
         printf("Change Name: ");
         gets(d->name);
@@ -322,7 +328,7 @@ void save(SD donors[]){
     fclose(f);
 }
 
-void search_donors(char *grp,int *searched_index,SD donors[]){
+void search_donors(char grp[],int searched_index[],SD donors[]){
 
     SD searched_dornors[MAX_DONORS];
     int size = 0;
