@@ -28,6 +28,7 @@ char action;
 //functions
 void init(SD donors[]);
 
+void welcome();
 void main_menu();
 void purchase_donor(SD donors[]);
 void add_donor(SD donors[]);
@@ -46,6 +47,9 @@ int main(){
     SD donors[MAX_DONORS];
     init(donors);
     while(state != "EXIT"){
+        if(strcmp(state,"welcome") == 0){
+            welcome();
+        }
         if(strcmp(state,"main_menu") == 0){
             main_menu();
         }
@@ -70,9 +74,9 @@ int main(){
 
 
 void init(SD donors[]){
-    strcpy(state,"main_menu");
+    strcpy(state,"welcome");
     donors_size = 0;
-    FILE *f = fopen("donors.txt","r");
+    FILE *f = fopen("donors.dat","r");
     while(1){
         SD d;
         if(!fgets(d.name,100,f)) break;
@@ -89,11 +93,34 @@ void init(SD donors[]){
         donors_size++;
 
     }
+    fclose(f);
+}
+
+void welcome(){
+
+	printf("\n\n\n\n");
+	printf("                        ====================================================\n");
+	printf("                        ++================================================++\n");
+	printf("                        ||                    Welcome                     ||\n");
+	printf("                        ||                      To                        ||\n");
+	printf("                        ||            Dhaka BloodBank Center              ||\n");
+	printf("                        ||                                                ||\n");
+	printf("                        ||              --Worlds Best Blood Bank--        ||\n");
+	printf("                        ||                                                ||\n");
+	printf("                        ||                                                ||\n");
+	printf("                        ||                             --hotline: 007008  ||\n");
+	printf("                        ++================================================++\n");
+	printf("                        |            Organised By North South              |\n");
+	printf("                        ====================================================\n");
+	printf("                        press any key to continue to main menu....\n");
+    getch();
+    strcpy(state,"main_menu");
+
 }
 
 void main_menu(){
     system("cls");
-    printf("<<<<<<<<<<<<<<<<<<<<<Welcome To blood bank>>>>>>>>>>>>>>>>>>>>\n\n");
+    printf("<<<<<<<<<<<<<<<<<<<<<<   Main Menu   >>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("1. Purchase Donation\n");
     printf("2. Add Donor\n");
     printf("3. Edit Donor\n");
@@ -136,7 +163,7 @@ void purchase_donor(SD donors[]){
 
     for(int i = 0; i < MAX_DONORS; i++) searched_index[i] = -1;
 
-    printf("<<<<<<<<<<<<<<<<<<<<<< Purchase donnor >>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+    printf("<<<<<<<<<<<<<<<<<<<<<< Purchase Donor  >>>>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("Info:-\n");
 
     printf("Enter blood group: ");
@@ -174,7 +201,7 @@ void add_donor(SD donors[]){
     fflush(stdin);
 
     struct Donor d;
-    printf("<<<<<<<<<<<<<<<<<< add donor >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+    printf("<<<<<<<<<<<<<<<<<<<<<<    Add Donor    >>>>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("Donor Info          :-\n");
     printf("donor Name          :- ");
     gets(d.name);
@@ -204,19 +231,22 @@ void add_donor(SD donors[]){
 
 void edit_donor(SD donors[]){
     system("cls");
-    printf("<<<<<<<<<<<<<<<<<<<<Edit donor>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+    printf("<<<<<<<<<<<<<<<<<<<<<<    Edit Donor   >>>>>>>>>>>>>>>>>>>>>>>\n\n");
 
     printf("These are the donors added in database:-\n");
     view_list(donors_size,donors);
 
-    printf("Enter index of which one to edit...\n\n");
-    printf("press x to exit.");
-    action = getch();
-    if(action == 'x'){
+    printf("Enter -1 to exit.\n");
+
+    printf("Enter index of which one to edit: ");
+
+    int index;
+    scanf("%d",&index);
+    if(index == -1){
         strcpy(state,"main_menu");
         return;
     }
-    SD *d = &donors[action-'0'-1];
+    SD *d = &donors[index-1];
 
 
 
@@ -268,7 +298,9 @@ void edit_donor(SD donors[]){
         return;
 
     default:
-        break;
+        printf("wrong input..");
+        getch();
+        return;
     }
     save(donors);
     fflush(stdin);
@@ -277,31 +309,34 @@ void edit_donor(SD donors[]){
 
 void delete_donor(SD donors[]){
     system("cls");
-    printf("<<<<<<<<<<<<<<<<<<<<<<<<Delete Donor >>>>>>>>>>>>>>>>>>>>>>>\n\n");
+    printf("<<<<<<<<<<<<<<<<<<<<<<  Delete Donor  >>>>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("these are the donors added in the database:-\n");
 
     view_list(donors_size,donors);
 
-    printf("Enter the index of donor which you want to delete...");
-    action = getch();
+    printf("Enter the index of donor which you want to delete: ");
+
+    int index;
+    scanf("%d",&index);
 
     system("cls");
 
-    int index = action-'0'-1;
-    view_list(1,&donors[index]);
+    view_list(1,&donors[index-1]);
 
     printf("Are you sure you want to delete this donor?\n");
     printf("press y/n:\n\n");
-    printf("press x to exit");
     action = getch();
-    if(action == 'x'){
+    if(action == 'n'){
+        printf("Did not delete the Donor.\n");
+        printf("Going back to Main Menu press any key..\n");
+        getch();
         strcpy(state,"main_menu");
         return;
     }
     delete_index(index,donors);
 
-
     getch();
+    strcpy(state,"main_menu");
 
 
 }
@@ -309,7 +344,7 @@ void delete_donor(SD donors[]){
 void view_donor(SD donors[]){
     system("cls");
 
-    printf("<<<<<<<<<<<<<<<<<<<<<view available donor>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+    printf("<<<<<<<<<<<<<<<<<<<<<< Available Donor List >>>>>>>>>>>>>>>>>>>>>>>\n\n");
     printf("These are the donors available:-\n");
     view_list(donors_size,donors);
 
@@ -320,7 +355,7 @@ void view_donor(SD donors[]){
 
 
 void save(SD donors[]){
-    FILE *f = fopen("donors.txt","wt");
+    FILE *f = fopen("donors.dat","wt");
     for(int i = 0; i < donors_size; i++){
         struct Donor d = donors[i];
         fprintf(f,"%s\n%s\n%s\n%s\n%d\n%f\n",d.name,d.group,d.location,d.contact,d.age,d.hemoglobin);
@@ -357,7 +392,7 @@ void view_list(int size,SD list[]){
         SD d = list[i];
 
         printf("| %d.",i+1);
-        if(i < 10) printf(" ");
+        if(i+1 < 10) printf(" ");
         printf("|");
 
         printf("%s",d.name);
@@ -396,6 +431,6 @@ void delete_index(int index,SD list[]){
         list[i] = list[i+1];
     }
     donors_size--;
-    printf("donor deleted from database.");
+    printf("donor deleted from database.\n");
     save(list);
 }
