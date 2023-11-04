@@ -1,3 +1,8 @@
+/*
+Fazly Fardin Chowdhury
+ID: 2322480642
+project: Blood Bank Management
+*/
 #include<stdio.h>
 #include<string.h>
 #include<conio.h>
@@ -46,7 +51,7 @@ void delete_index(int index,SD list[]);
 int main(){
     SD donors[MAX_DONORS];
     init(donors);
-    while(state != "EXIT"){
+    while(strcmp(state,"EXIT") != 0){
         if(strcmp(state,"welcome") == 0){
             welcome();
         }
@@ -110,7 +115,7 @@ void welcome(){
 	printf("                        ||                                                ||\n");
 	printf("                        ||                             --hotline: 007008  ||\n");
 	printf("                        ++================================================++\n");
-	printf("                        |            Organised By North South              |\n");
+	printf("                        ||           Organised By North South             ||\n");
 	printf("                        ====================================================\n");
 	printf("                        press any key to continue to main menu....\n");
     getch();
@@ -126,6 +131,7 @@ void main_menu(){
     printf("3. Edit Donor\n");
     printf("4. View Available Donors\n");
     printf("5. Delete Donor\n");
+    printf("6. Exit\n\n");
 
     printf("press any option...");
     action = getch();
@@ -145,6 +151,9 @@ void main_menu(){
         break;
     case '5':
         strcpy(state, "delete_donor");
+        break;
+    case '6':
+        strcpy(state,"EXIT");
         break;
     default:
         printf("wrong input");
@@ -172,7 +181,7 @@ void purchase_donor(SD donors[]){
 
     search_donors(grp,searched_index,donors);
     printf("Press the index of donor which you would like to purchase...\n\n");
-    printf("press x to exit.\n");
+    printf("press x to exit to main menu...\n");
 
     action = getch();
     if(action == 'x'){
@@ -183,12 +192,17 @@ void purchase_donor(SD donors[]){
     system("cls");
     view_list(1,&donors[index]);
     printf("are you sure you want to purchase this donor?\n");
+    printf("any purchase will remove the donor from database.\n");
     printf("press y/n:\n");
     action = getch();
     switch(action){
     case 'y':
+        printf("donor %s have been purchased.\n",donors[index].name);
         delete_index(index,donors);
         save(donors);
+        break;
+    default:
+        printf("Didn't complete purchase..\n");
         break;
     }
     printf("press any key to continue to main menu..\n");
@@ -265,31 +279,38 @@ void edit_donor(SD donors[]){
 
     printf("7.exit\n");
 
+    fflush(stdin);
     action = getch();
     system("cls");
     switch(action){
 
     case '1':
+        printf("previous name: %s\n",d->name);
         printf("Change Name: ");
         gets(d->name);
         break;
     case '2':
+        printf("previous age: %d\n",d->age);
         printf("Change age: ");
         scanf("%d",&d->age);
         break;
     case '3':
+        printf("previous Group: %s\n",d->group);
         printf("Change Group: ");
         scanf("%s",d->group);
         break;
     case '4':
+        printf("previous Hemoglobin rate: %0.1f\n",d->hemoglobin);
         printf("Change Hemoglobin: ");
         scanf("%f",&d->hemoglobin);
         break;
     case '5':
+        printf("previous Location: %s\n",d->location);
         printf("Change Location: ");
         scanf("%s",d->location);
         break;
     case '6':
+        printf("previous Contact: %s\n",d->contact);
         printf("Change Contact: ");
         scanf("%s",d->contact);
         break;
@@ -318,10 +339,11 @@ void delete_donor(SD donors[]){
 
     int index;
     scanf("%d",&index);
+    index--;
 
     system("cls");
 
-    view_list(1,&donors[index-1]);
+    view_list(1,&donors[index]);
 
     printf("Are you sure you want to delete this donor?\n");
     printf("press y/n:\n\n");
@@ -348,6 +370,7 @@ void view_donor(SD donors[]){
     printf("These are the donors available:-\n");
     view_list(donors_size,donors);
 
+    printf("Press any key to continue to main menu...");
     getch();
     strcpy(state,"main_menu");
 }
