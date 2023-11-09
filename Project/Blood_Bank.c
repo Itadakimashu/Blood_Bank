@@ -81,7 +81,7 @@ int main(){
 void init(SD donors[]){
     strcpy(state,"welcome");
     donors_size = 0;
-    FILE *f = fopen("donors.dat","r");
+    FILE *f = fopen("donors.dat","rt");
     while(1){
         SD d;
         if(!fgets(d.name,100,f)) break;
@@ -216,9 +216,18 @@ void add_donor(SD donors[]){
 
     struct Donor d;
     printf("<<<<<<<<<<<<<<<<<<<<<<    Add Donor    >>>>>>>>>>>>>>>>>>>>>>>\n\n");
+    printf("leave name empty to go back to main menu..\n\n");
     printf("Donor Info          :-\n");
     printf("donor Name          :- ");
     gets(d.name);
+
+    if(strcmp(d.name,"") == 0){
+        printf("didn't create donnor going back to main menu..");
+        getch();
+        strcpy(state,"main_menu");
+        return;
+    }
+
     printf("donor blood group   :- ");
     gets(d.group);
     printf("Location            :- ");
@@ -238,7 +247,6 @@ void add_donor(SD donors[]){
     printf("donor added to database...\n");
     printf("press any key to continue.");
     getch();
-    strcpy(state, "main_menu");
 
 
 }
@@ -250,19 +258,29 @@ void edit_donor(SD donors[]){
     printf("These are the donors added in database:-\n");
     view_list(donors_size,donors);
 
-    printf("Enter -1 to exit.\n");
+    printf("Enter x to exit.\n");
 
-    printf("Enter index of which one to edit: ");
+    printf("Enter the name of which donor to edit: ");
 
-    int index;
-    scanf("%d",&index);
-    if(index == -1){
+    char name[30];
+    fflush(stdin);
+    gets(name);
+    if(strcmp(name,"x") == 0){
         strcpy(state,"main_menu");
         return;
     }
-    SD *d = &donors[index-1];
+    SD *d;
+    for(int i = 0; i < donors_size; i++){
+        if(strcmp(name,donors[i].name) == 0){
+            d = &donors[i];
+        }
+    }
 
-
+    if(strcmp(d->name,name) != 0){
+        printf("No Person as %s found in database. please try again..",name);
+        getch();
+        return;
+    }
 
 
     system("cls");
@@ -335,12 +353,18 @@ void delete_donor(SD donors[]){
 
     view_list(donors_size,donors);
 
+    printf("Enter -1 to exit..\n\n");
+
     printf("Enter the index of donor which you want to delete: ");
 
     int index;
     scanf("%d",&index);
-    index--;
 
+    if(index == -1){
+        strcpy(state,"main_menu");
+        return;
+    }
+    index--;
     system("cls");
 
     view_list(1,&donors[index]);
@@ -348,7 +372,7 @@ void delete_donor(SD donors[]){
     printf("Are you sure you want to delete this donor?\n");
     printf("press y/n:\n\n");
     action = getch();
-    if(action == 'n'){
+    if(action != 'y'){
         printf("Did not delete the Donor.\n");
         printf("Going back to Main Menu press any key..\n");
         getch();
